@@ -36,7 +36,7 @@ function renderTodos (todoList) {
             <tr id="id-${todo.id}" class="completed" data-testid="toDoItem">
             <td>✅</td>
             <td>${todo.text}</td>
-            <td>${todo.completedAt}</td>
+            <td>${new Date(todo.completedAt).toLocaleString('en-us')}</td>
             <td><button type="button" class="btn btn-danger" onclick="deleteTodos(event, ${todo.id})" data-testid="deleteButton">Delete</button></td>
             </tr>
             `
