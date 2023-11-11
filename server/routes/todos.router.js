@@ -30,4 +30,34 @@ router.post('/', (req, res) => {
         });
 });
 
+router.delete('/:id', (req, res) => {
+    let idToDelete = req.params.id;
+    let queryText = 'DELETE FROM "todos" WHERE "id" = $1;';
+
+    const sqValues = [idToDelete]
+    pool.query(queryText, sqValues)
+        .then((result) => {
+            res.sendStatus(200);
+        })
+        .catch((dbError) => {
+            console.log("delete todo failed", dbError);
+            res.sendStatus(500);
+        })
+});
+
+router.put('/:id', (req, res) => {
+    let idToUpdate = req.params.id;
+    let queryText = 'UPDATE "todos" SET "isComplete" = true WHERE "id" = $1;';
+
+    const sqValues = [idToUpdate]
+    pool.query(queryText, sqValues)
+        .then((result) => {
+            res.sendStatus(200);
+        })
+        .catch((dbError) => {
+            console.log("update todo failed", dbError);
+            res.sendStatus(500);
+        })
+});
+
 module.exports = router;

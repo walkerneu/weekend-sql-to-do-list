@@ -14,8 +14,8 @@
   </header>
   <section>
     <h2>Add a To-Do item!</h2>
-    <input type="text" placeholder="Type Here" data-testid="toDoTextInput">
-    <button data-testid="submitButton">Submit</button>
+    <input id="todo-input" type="text" placeholder="Type Here" data-testid="toDoTextInput">
+    <button onclick="postTodos(event)" data-testid="submitButton">Submit</button>
   </section>
   <section>
     <h2>My To-Do List:</h2>
