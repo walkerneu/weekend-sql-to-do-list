@@ -46,7 +46,10 @@ router.delete('/:id', (req, res) => {
 
 router.put('/:id', (req, res) => {
     let idToUpdate = req.params.id;
-    let queryText = 'UPDATE "todos" SET "isComplete" = true WHERE "id" = $1;';
+    let queryText = `
+    UPDATE "todos" 
+    SET "isComplete" = true, "completedAt" = NOW()
+    WHERE "id" = $1;`;
 
     const sqValues = [idToUpdate]
     pool.query(queryText, sqValues)

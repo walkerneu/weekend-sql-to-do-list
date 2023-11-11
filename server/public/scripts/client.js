@@ -36,6 +36,7 @@ function renderTodos (todoList) {
             <tr id="id-${todo.id}" class="completed" data-testid="toDoItem">
             <td>✅</td>
             <td>${todo.text}</td>
+            <td>${todo.completedAt}</td>
             <td><button type="button" class="btn btn-danger" onclick="deleteTodos(event, ${todo.id})" data-testid="deleteButton">Delete</button></td>
             </tr>
             `
@@ -70,9 +71,9 @@ function deleteTodos(event, todoId) {
     Swal.fire({
         title: "Are you sure you want to delete?",
         showDenyButton: true,
-        showCancelButton: true,
+        // showCancelButton: true,
         confirmButtonText: "Delete",
-        denyButtonText: `Don't delete`
+        denyButtonText: `Return`
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire("Deleted!", "", "success");
@@ -98,9 +99,6 @@ function updateTodos (event, todoId) {
         url: `/todos/${todoId}`
       }).then(function (response) {
         getTodos();
-        // let todoClass = document.getElementById(`id-${todoId}`);
-        // console.log(todoClass);
-        // todoClass.classList.add("completed");
       }).catch(function (error) {
         console.log('error in PUT', error);
       });
