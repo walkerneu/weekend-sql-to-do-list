@@ -14,6 +14,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+    console.log(req.body)
     let newTodo = req.body;
     console.log('Adding to-do', newTodo);
 
@@ -45,21 +46,40 @@ router.delete('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
+    let queryKey = req.body.key;
+    console.log(queryKey);
     let idToUpdate = req.params.id;
-    let queryText = `
-    UPDATE "todos" 
-    SET "isComplete" = true, "completedAt" = NOW()
-    WHERE "id" = $1;`;
+    if (queryKey === 1){
+        let queryText = `
+        UPDATE "todos" 
+        SET "isComplete" = true, "completedAt" = NOW()
+        WHERE "id" = $1;`;
+        const sqValues = [idToUpdate]
+        pool.query(queryText, sqValues)
+            .then((result) => {
+                res.sendStatus(200);
+            })
+            .catch((dbError) => {
+                console.log("update todo failed", dbError);
+                res.sendStatus(500);
+            })
+    }
+    else if (queryKey === 2) {
+        let queryText = `
+        UPDATE "todos" 
+        SET "isComplete" = false, "completedAt" = NULL
+        WHERE "id" = $1;`;
+        const sqValues = [idToUpdate]
+        pool.query(queryText, sqValues)
+            .then((result) => {
+                res.sendStatus(200);
+            })
+            .catch((dbError) => {
+                console.log("update todo failed", dbError);
+                res.sendStatus(500);
+            })
+    }
 
-    const sqValues = [idToUpdate]
-    pool.query(queryText, sqValues)
-        .then((result) => {
-            res.sendStatus(200);
-        })
-        .catch((dbError) => {
-            console.log("update todo failed", dbError);
-            res.sendStatus(500);
-        })
 });
 
 module.exports = router;

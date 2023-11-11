@@ -34,16 +34,13 @@ function renderTodos (todoList) {
         if (todo.isComplete === true) {
             completeTodo.innerHTML += `
             <tr id="id-${todo.id}" class="completed" data-testid="toDoItem">
-            <td>✅</td>
+            <td onclick="returnTodos (event, ${todo.id})">✅</td>
             <td>${todo.text}</td>
             <td>${new Date(todo.completedAt).toLocaleString('en-us')}</td>
             <td><button type="button" class="btn btn-danger" onclick="deleteTodos(event, ${todo.id})" data-testid="deleteButton">Delete</button></td>
             </tr>
             `
         }
-            // let todoClass = document.getElementById(`id-${todo.id}`);
-            // console.log(todoClass);
-            // todoClass.classList.add("completed");
         }
     }
 
@@ -96,7 +93,25 @@ function updateTodos (event, todoId) {
     event.preventDefault();
     axios({
         method: 'PUT',
-        url: `/todos/${todoId}`
+        url: `/todos/${todoId}`,
+        data: {
+            key: 1
+        }
+      }).then(function (response) {
+        getTodos();
+      }).catch(function (error) {
+        console.log('error in PUT', error);
+      });
+}
+
+function returnTodos (event, todoId) {
+    event.preventDefault();
+    axios({
+        method: 'PUT',
+        url: `/todos/${todoId}`,
+        data: {
+            key: 2
+        }
       }).then(function (response) {
         getTodos();
       }).catch(function (error) {
