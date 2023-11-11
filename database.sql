@@ -28,7 +28,14 @@ DELETE FROM "todos"
   WHERE "id" = $1;
 
 -- SQL code for PUT route
+-- If item is marked completed
 UPDATE "todos" 
     SET "isComplete" = true, 
         "completedAt" = NOW()
+    WHERE "id" = $1;
+
+-- If completed item is marked uncompleted
+UPDATE "todos" 
+    SET "isComplete" = false, 
+        "completedAt" = NULL
     WHERE "id" = $1;
