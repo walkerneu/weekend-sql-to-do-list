@@ -14,3 +14,13 @@ function getTodos() {
       console.log('error in GET', error);
     });
 }
+
+function renderTodos (todoList) {
+    const todoDisplay = document.getElementById('todo-list')
+    todoDisplay.innerHTML = '';
+    for (let todo of todoList) {
+        todoDisplay.innerHTML += `
+        <div data-testid="toDoItem">${todo.text}</div>
+        `
+    }
+}
