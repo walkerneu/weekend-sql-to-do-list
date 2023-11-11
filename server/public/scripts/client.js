@@ -17,23 +17,35 @@ function getTodos() {
 
 function renderTodos (todoList) {
     document.getElementById('todo-input').value = '';
-    const todoDisplay = document.getElementById('todo-list')
-    todoDisplay.innerHTML = '';
+    let newTodo = document.getElementById('new-todo')
+    newTodo.innerHTML = '';
+    let completeTodo = document.getElementById('complete-todo')
+    completeTodo.innerHTML = '';
     for (let todo of todoList) {
-        todoDisplay.innerHTML += `
-        <div id="id-${todo.id}" data-testid="toDoItem">
-        ${todo.text}
-        ${todo.isComplete != true ? `<button onclick="updateTodos(event, ${todo.id})" data-testid="completeButton">Mark Complete</button>`:'✅'}
-        <button onclick="deleteTodos(event, ${todo.id})" data-testid="deleteButton">Delete</button>
-        </div>
-        `
+        if (todo.isComplete === false) {
+            newTodo.innerHTML += `
+            <tr id="id-${todo.id}" data-testid="toDoItem">
+            <td>${todo.text}</td>
+            <td><button type="button" class="btn btn-success" onclick="updateTodos(event, ${todo.id})" data-testid="completeButton">Mark Complete</button></td>
+            <td><button type="button" class="btn btn-danger" onclick="deleteTodos(event, ${todo.id})" data-testid="deleteButton">Delete</button></td>
+            </tr>
+            `
+        }
         if (todo.isComplete === true) {
-            let todoClass = document.getElementById(`id-${todo.id}`);
-            console.log(todoClass);
-            todoClass.classList.add("completed");
+            completeTodo.innerHTML += `
+            <tr id="id-${todo.id}" class="completed" data-testid="toDoItem">
+            <td>✅</td>
+            <td>${todo.text}</td>
+            <td><button type="button" class="btn btn-danger" onclick="deleteTodos(event, ${todo.id})" data-testid="deleteButton">Delete</button></td>
+            </tr>
+            `
+        }
+            // let todoClass = document.getElementById(`id-${todo.id}`);
+            // console.log(todoClass);
+            // todoClass.classList.add("completed");
         }
     }
-}
+
 
 function postTodos(event) {
     event.preventDefault();

@@ -5,7 +5,6 @@ router.get('/', (req, res) => {
     let queryText = 'SELECT * FROM "todos" ORDER BY "id";';
     pool.query(queryText).then(result => {
         console.log('in router.get',);
-        // Sends back the results in an object
         res.send(result.rows);
     })
         .catch(error => {
