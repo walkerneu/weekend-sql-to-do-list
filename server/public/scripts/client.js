@@ -21,12 +21,17 @@ function renderTodos (todoList) {
     todoDisplay.innerHTML = '';
     for (let todo of todoList) {
         todoDisplay.innerHTML += `
-        <div id=${todo.id} data-testid="toDoItem">
+        <div id="id-${todo.id}" data-testid="toDoItem">
         ${todo.text}
         ${todo.isComplete != true ? `<button onclick="updateTodos(event, ${todo.id})" data-testid="completeButton">Mark Complete</button>`:'✅'}
         <button onclick="deleteTodos(event, ${todo.id})" data-testid="deleteButton">Delete</button>
         </div>
         `
+        if (todo.isComplete === true) {
+            let todoClass = document.getElementById(`id-${todo.id}`);
+            console.log(todoClass);
+            todoClass.classList.add("completed");
+        }
     }
 }
 
@@ -63,17 +68,14 @@ function deleteTodos(event, todoId) {
 
 function updateTodos (event, todoId) {
     event.preventDefault();
-    console.log(event.target.parentElement)
     axios({
         method: 'PUT',
         url: `/todos/${todoId}`
       }).then(function (response) {
-        let todoClass = document.getElementById(`${todoId}`)
-        todoClass.classList.add("completed");
         getTodos();
-        
-        // event.target.parentElement.classList.add("completed");
-    
+        // let todoClass = document.getElementById(`id-${todoId}`);
+        // console.log(todoClass);
+        // todoClass.classList.add("completed");
       }).catch(function (error) {
         console.log('error in PUT', error);
       });
