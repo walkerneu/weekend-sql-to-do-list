@@ -67,15 +67,28 @@ function postTodos(event) {
 
 function deleteTodos(event, todoId) {
     event.preventDefault();
-    axios({
-      method: 'DELETE',
-      url: `/todos/${todoId}`
-    }).then(function (response) {
-      getTodos();
-  
-    }).catch(function (error) {
-      console.log('error in DELETE', error);
-    });
+    Swal.fire({
+        title: "Are you sure you want to delete?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+        denyButtonText: `Don't delete`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("Deleted!", "", "success");
+          axios({
+            method: 'DELETE',
+            url: `/todos/${todoId}`
+          }).then(function (response) {
+            getTodos();
+        
+          }).catch(function (error) {
+            console.log('error in DELETE', error);
+          });
+        } else if (result.isDenied) {
+          Swal.fire("To-Do item was not deleted!", "", "info");
+        }
+      });
 }
 
 function updateTodos (event, todoId) {
