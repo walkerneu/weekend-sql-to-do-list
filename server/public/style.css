@@ -1,3 +1,8 @@
 .completed {
     color: green;
 }
+
+.check {
+    font-size: larger;
+    cursor: pointer
+}

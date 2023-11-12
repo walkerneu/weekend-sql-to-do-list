@@ -2,6 +2,9 @@ console.log('JS is sourced!');
 
 getTodos();
 
+//getTodos handles GET response to server
+//gets back all of the database info in the response
+//triggers render function with response data
 function getTodos() {
     console.log('in getTodos');
     axios({
@@ -15,6 +18,11 @@ function getTodos() {
     });
 }
 
+// renderTodos clears the input value if a new item was submitted
+// clears the html fields where to do list will be rendered
+// if the item is marked uncomplete in the database
+// function renders item to the to do list
+// if complete, renders item to completed list
 function renderTodos (todoList) {
     document.getElementById('todo-input').value = '';
     let newTodo = document.getElementById('new-todo')
@@ -34,7 +42,7 @@ function renderTodos (todoList) {
         if (todo.isComplete === true) {
             completeTodo.innerHTML += `
             <tr id="id-${todo.id}" class="completed" data-testid="toDoItem">
-            <td onclick="returnTodos (event, ${todo.id})">✅</td>
+            <td class="check" onclick="returnTodos (event, ${todo.id})">✅</td>
             <td>${todo.text}</td>
             <td>${new Date(todo.completedAt).toLocaleString('en-us')}</td>
             <td><button type="button" class="btn btn-danger" onclick="deleteTodos(event, ${todo.id})" data-testid="deleteButton">Delete</button></td>
@@ -44,7 +52,11 @@ function renderTodos (todoList) {
         }
     }
 
-
+// postTodos handles the POST to the server when
+// a new to do is submitted, it makes an object with
+// the to do text and sends it to the server in the
+// data of the post, the response triggers the
+// getTodos function
 function postTodos(event) {
     event.preventDefault();
     let incTodo = {
@@ -63,6 +75,14 @@ function postTodos(event) {
       });
 }
 
+// deleteTodos is an onclick function rendered
+// on a delete button for each to do item
+// when clicked, the function gets passed the unique
+// id of the clicked item
+// sweet alert has been sourced in, and a Swal command
+// is used to pop up a message to confirm deletion
+// if confirmed, a DELETE request is made to the server
+// using that unique id
 function deleteTodos(event, todoId) {
     event.preventDefault();
     Swal.fire({
@@ -89,6 +109,15 @@ function deleteTodos(event, todoId) {
       });
 }
 
+// updateTodos is an onclick function rendered
+// on a button with each uncompleted to do item, when clicked it
+// sends a PUT request to the server to update the
+// item to be marked complete, and timestamp the
+// completion. Here we send data in the
+// request, because we are going to use the PUT for two
+// different things. a key of 1 is sent, to denote the
+// function being used. the response triggers the
+// getTodos function
 function updateTodos (event, todoId) {
     event.preventDefault();
     axios({
@@ -104,6 +133,14 @@ function updateTodos (event, todoId) {
       });
 }
 
+// returnTodos is an onclick function rendered
+// on a green check mark with each completed todo
+// item. When clicked, it sends a PUT request to the
+// server to update the clicked item to uncomplete
+// and remove the completion timestamp. Here we send
+// data in the request to denote whcih function the PUT
+// will run, we use a key of 2. The response triggers
+// the getTodos function
 function returnTodos (event, todoId) {
     event.preventDefault();
     axios({
